@@ -22,8 +22,13 @@ import java.util.List;
 /**
  * Created by dell on 2019/3/27.
  */
-public class Server {
+public class TextHandler {
     private final static List<String> tmpList = Arrays.asList(new String[]{" !   ", " ;       "});
+
+
+    public static void main(String[] args) {
+        testNER();
+    }
 
 
     public static void test(String[] args) {
@@ -55,7 +60,7 @@ public class Server {
             lists.add(tmp);
         }
 
-        List<Double> spammerV = getWebSpammer(lists);
+        List<Double> spammerV = getWebSpammer(lists); // 获取相似度列表
         return Collections.max(spammerV); // 最大值
     }
 
@@ -175,21 +180,25 @@ public class Server {
     }
 
     private static void testNER() {
+        HanLP.Config.ShowTermNature = false;
+        CustomDictionary.add("上Q");
         String[] testCase = new String[]{
-                "签约仪式前，秦光荣、李纪恒、仇和等一同会见了参加签约的企业家。",
-                "王国强、高峰、汪洋、张朝阳光着头、韩寒、小四",
-                "张浩和胡健康复员回家了",
-                "王总和小丽结婚了",
-                "编剧邵钧林和稽道青说",
-                "这里有关天培的有关事迹",
-                "龚学平等领导,邓颖超生前",
-                "于立婷和代继涛是同学"
+                "我对手要求。能打，能接。能上Q，能上微信。其它就是屁",
+                "麒麟970芯片前的手机相对差些，麒麟970芯片后的手机，性能已经突破了，接近苹果 的了，和高通距离也窄了，我继续选择华为。",
+                "封杀加拿大⛽⛽⛽",
+                "特鲁多，必定吊死在美国这棵树叉上......",
+                "早做准备```物色一两个美国人```份量越重越好````是抓是放`相机行事"
         };
-        Segment segment = HanLP.newSegment().enableNameRecognize(true).enableOrganizationRecognize(true);
-        for (String s : testCase) {
-            List<Term> termList = segment.seg(s);
+
+        TextHandler handler = new TextHandler();
+        for (String text : testCase) {
+            List<Term> termList = HanLP.segment(text);
             System.out.println(termList);
+            List<String> list = TextHandler.removeStopWords(termList);
+            System.out.println(list);
+            System.out.println();
         }
+
     }
 
     /*列表去重*/

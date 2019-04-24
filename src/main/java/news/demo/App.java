@@ -9,7 +9,7 @@ import news.demo.entities.Comment;
 import news.demo.entities.News;
 import news.demo.entities.User;
 import news.demo.parse.ParseXinLangData;
-import news.demo.server.Server;
+import news.demo.server.TextHandler;
 import news.demo.utilities.TimeParse;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -63,7 +63,7 @@ public class App {
             Double value = entry.getValue();
             userDao.updateUserTypeByUid(uid);
         }
-        session.commit();
+        //session.commit();
     }
 
     /**
@@ -91,7 +91,7 @@ public class App {
             Map.Entry<String, List<String>> entry = (Map.Entry<String, List<String>>) iter.next();
             String uid = entry.getKey();
             List<String> context = entry.getValue();
-            Double v = Server.getMaxSpammer(context);
+            Double v = TextHandler.getMaxSpammer(context);
             if (v >= 0.80) {
                 spammerV.put(uid, v);
             }
@@ -99,7 +99,6 @@ public class App {
         System.out.println(spammerV.size());
         //FileUtils.printMap(spammerV);
         return spammerV;
-
     }
 
     /**
@@ -181,7 +180,7 @@ public class App {
             System.out.println(user);
             resultHashMap.put(uid, times);
         }
-        session.commit();
+        // session.commit();
         return resultHashMap;
     }
 
