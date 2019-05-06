@@ -10,6 +10,7 @@ import news.demo.entities.News;
 import news.demo.entities.User;
 import news.demo.parse.ParseXinLangData;
 import news.demo.server.TextHandler;
+import news.demo.utilities.FileUtilImpl;
 import news.demo.utilities.TimeParse;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
@@ -35,6 +36,7 @@ public class App {
     private static UserDao userDao = null;
     private static Reader reader = null;
     private static SqlSession session = null;
+    private static FileUtilImpl fileUtil = FileUtilImpl.getInstance();
     private static SimpleDateFormat SDF = new SimpleDateFormat("yyyy-MM-dd"); //
 
     static {
@@ -202,7 +204,7 @@ public class App {
         try {
             for (File file : files) {
                 count++;
-                String data = ParseXinLangData.getData(file);
+                String data = fileUtil.getData(file);
                 String js = null;
                 int strtIndex = data.indexOf("(");
                 if (strtIndex != -1) {
@@ -255,7 +257,7 @@ public class App {
             System.out.println("访问的文件 " + filePath);
             if (filePath.length() != 0) {
                 File file = new File(filePath);
-                String data = ParseXinLangData.getData(file);
+                String data = fileUtil.getData(file);
                 String js = null;
 
                 int strtIndex = data.indexOf("(");

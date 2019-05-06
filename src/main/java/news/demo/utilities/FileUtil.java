@@ -1,18 +1,13 @@
 package news.demo.utilities;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.List;
 
 /**
  * Created by dell on 2019/4/23.
  */
 public interface FileUtil {
-    /**
-     * 创建文件
-     * @param file
-     * @return 文件全名
-     */
-    String createFile(File file);
-
     /**
      * 创建文件夹
      * @param file
@@ -50,16 +45,21 @@ public interface FileUtil {
     void saveToTxt(String path, String fileName);
 
     /**
-     * 读取pdf
-     * @param file
+     * 获取文件夹下的所有文件（不包括文件夹）
+     * @param path
      * @return
      */
-    String loadFromPDF(File file);
+    List<File> getAllFiles(String path);
+
+    String getData(File file) throws IOException;
 
     /**
-     * 读取word
-     * @param file
+     * 创建文件
+     * @param filePath
+     * @param name
      * @return
+     * @throws Exception
      */
-    String loadFromDOC(File file);
+    boolean createFile(String filePath, String name) throws Exception;
+
 }

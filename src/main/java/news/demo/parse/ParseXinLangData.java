@@ -4,11 +4,14 @@ import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import news.demo.entities.Comment;
 import news.demo.entities.News;
+import news.demo.utilities.FileUtilImpl;
 
 import java.io.*;
 import java.util.ArrayList;
 
 public class ParseXinLangData {
+    private static FileUtilImpl fileUtil = FileUtilImpl.getInstance();
+
     public static void parseNewsInsert(String[] args) throws IOException {
         String path = "F:/scrapy/xinlang/data";
 
@@ -17,7 +20,7 @@ public class ParseXinLangData {
             System.out.println("访问的文件 " + filePath);
             if (filePath.length() != 0) {
                 File file = new File(filePath);
-                String data = getData(file);
+                String data = fileUtil.getData(file);
                 String js = null;
 
                 int strtIndex = data.indexOf("(");
@@ -57,7 +60,7 @@ public class ParseXinLangData {
 
     public static void parseData(String dataPath) throws Exception {
         File fileData = new File(dataPath);
-        String data = ParseXinLangData.getData(fileData);
+        String data = fileUtil.getData(fileData);
         int strtIndex = data.indexOf("(");
         int len = data.length();
         System.out.println("总长度： " + len);
@@ -69,7 +72,7 @@ public class ParseXinLangData {
         String outFilePath = "F:\\scrapy\\xinlangOutData\\data1\\";
         String fileName = "news1_data1.txt";
         String file = outFilePath + fileName;
-        createFile(outFilePath, fileName);
+        fileUtil.createFile(outFilePath, fileName);
         for (int i = 0; i < array.size(); i++) {
             JSONObject tmp = array.getJSONObject(i);
             String rank = tmp.getString("rank");
@@ -122,38 +125,6 @@ public class ParseXinLangData {
         return new File[0];
     }
 
-    public static boolean createDir(String path) {
-        File file = new File(path);
-        if (!file.exists()) {
-            return file.mkdirs();
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * 创建文件
-     *
-     * @param
-     * @return
-     */
-    public static boolean createFile(String filePath, String name) throws Exception {
-        File fileDir = new File(filePath);
-        if (!fileDir.exists()) {
-            fileDir.mkdir();
-        }
-
-        File fileName = new File(filePath + name);
-        try {
-            if (!fileName.exists()) {
-                fileName.createNewFile();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
-
     /**
      * 写入TXT，追加写入
      *
@@ -171,22 +142,5 @@ public class ParseXinLangData {
         }
     }
 
-    /**
-     * 读取数据
-     *
-     * @param
-     * @return
-     * @throws IOException
-     */
-    public static String getData(File file) throws IOException {
-        FileReader fileReader = new FileReader(file);
-        BufferedReader bffReader = new BufferedReader(fileReader);
-        StringBuilder stringBuilder = new StringBuilder();
-        String line = null;
-        while ((line = bffReader.readLine()) != null) {
-            stringBuilder.append(line);
-        }
-        bffReader.close();
-        return stringBuilder.toString();
-    }
+
 }
