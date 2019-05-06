@@ -1,7 +1,8 @@
 # Created by .ignore support plugin (hsz.mobi)
-target/classes/*
+# target/classes/*
 .idea/inspectionProfiles/
 src/test/
 target/generated-sources/
 .idea/libraries/*.xml
-.idea/*
+.idea/
+target/
