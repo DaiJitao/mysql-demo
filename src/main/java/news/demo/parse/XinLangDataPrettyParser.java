@@ -2,55 +2,22 @@ package news.demo.parse;
 
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import news.demo.entities.News;
 import news.demo.utilities.CSVUtils;
 import news.demo.utilities.FileUtil;
 import news.demo.utilities.FileUtilImpl;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class XinLangDataPrettyParser {
     private static FileUtil fileUtil = FileUtilImpl.getInstance();
 
-
-    public static void parseNewsInsert(String[] args) throws IOException {
-        String path = "F:/scrapy/xinlang/data";
-
-        for (int i = 1; i < 147; i++) {
-            String filePath = getLastFile(path + i);
-            System.out.println("访问的文件 " + filePath);
-            if (filePath.length() != 0) {
-                File file = new File(filePath);
-                String data = fileUtil.getData(file);
-                String js = null;
-
-                int strtIndex = data.indexOf("(");
-                if (strtIndex != -1) { //如果含有“（”
-                    int len = data.length();
-                    js = data.substring(strtIndex + 1, len - 1);
-                } else if (strtIndex == -1) {
-                    js = data;
-                }
-                JSONObject resultJSONObj = JSONObject.parseObject(js).getJSONObject("result");
-                //解析 新闻数据
-                JSONObject newsJSON = resultJSONObj.getJSONObject("news");
-                String title = newsJSON.getString("title");
-                String url = newsJSON.getString("url");
-                String time = newsJSON.getString("time");
-                String newsid = newsJSON.getString("newsid");
-                String channel = newsJSON.getString("channel");
-
-                News news = new News();
-                news.setNewsId(newsid).setTitle(title).setContent(title).setPostTime(time).setUrl(url).setChannel(channel);
-                System.out.println(news);
-            }
-        }
-        System.out.println("end");
-    }
-
+    /**
+     * 获取最后一个文件名
+     * @param path
+     * @return
+     */
     public static String getLastFile(String path) {
         ArrayList<File> files = listCountFiles(path);
         int len = files.size();
